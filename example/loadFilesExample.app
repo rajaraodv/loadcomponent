@@ -1,17 +1,14 @@
 <aura:application>
  
+ <!-- loads aotp_bootstrap.css from aotp_bootstrap(zip file) and loads jquery JavaScript file (not in zip file; notice "sfjs" extension) 
+ and then loads bootstrap.js from aotp_bootstrap(zip file) as bootstrap.js is dependent on jQuery.
+ -->
  	<jam:load 
-              filesInParallel="/resource/aotp_bootstrap/css/aotp_bootstrap.css"
-              filesInSeries="/resource/jquery/jquery.js,/resource/aotp_bootstrap/js/bootstrap.js"
+              filesInParallel="/resource/aotp_bootstrap/css/aotp_bootstrap.css,/resource/jquery.sfjs"
+              filesInSeries="/resource/aotp_bootstrap/js/bootstrap.js"
     />
 
-     <!--
-		filesInParallel take priority and are loaded first as quickly as possible. Once everything in filesInParallel are loaded, filesInSeries are loaded in order. So you can also do like below because bootstrap.js is dependant on css and jquery.
-      	<jam:load 
-      	 	filesInParallel="/resource/aotp_bootstrap/css/aotp_bootstrap.css,/resource/jquery/jquery.js"
-      		filesInSeries="/resource/aotp_bootstrap/js/bootstrap.js"
-         />
-     -->         
+   
     <div class="container">
       
       <jam:loadFilesExample/> 

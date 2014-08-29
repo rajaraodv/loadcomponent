@@ -3,9 +3,9 @@
 	<aura:attribute name="description" type="String" default="This is the body of the modal..."/>
     <aura:attribute name="modalName" type="String" default="myModal" description="Unique identifier for each instance..."/>
 
-      <aura:handler event="jam:staticResourcesLoaded" action="{!c.initScripts}"/>
-
-     
+    <!-- listen to staticResourcesLoaded and call initScripts function inside controller -->
+    <aura:handler event="jam:staticResourcesLoaded" action="{!c.initScripts}"/>
+ 
 
  
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>

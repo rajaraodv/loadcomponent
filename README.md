@@ -34,6 +34,7 @@ A simple and fast Salesforce Aura component that can be used to load  JS and CSS
 4. Listen to `staticResourcesLoaded` in your component and do something. 
 
 	```
+	<!-- listen to staticResourcesLoaded and call initScripts function inside controller -->
 	<aura:handler event="jam:staticResourcesLoaded" action="{!c.initScripts}"/>
 	```
  	
@@ -126,7 +127,7 @@ You can test it by loading the example app `loadFilesExample.app` inside example
 
 1. Create an Aura app with the with filenames `loadFilesExample.app`, `loadFilesExample.cmp`, `loadFilesExampleController.js` from developer console.
 2. Change namespace from `jam` to YOUR_NAMESPACE.
-3. Upload `aotp_bootstrap.zip` and `jquery.zip` to static resources with the same name ("aotp_bootstrap" and "jquery"). 
+3. Upload `aotp_bootstrap.zip` and `jquery.js` to static resources with the same name ("aotp_bootstrap" and "jquery"). 
 4. Open  `loadFilesExample.app`. Click on preview.
 5. 'click on the `Launch Modal - JavaScript` to see if the JavaScript dialog shows up.
 
