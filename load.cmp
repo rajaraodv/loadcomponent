@@ -50,10 +50,9 @@
 		filesInParallel="/resource/to/cssParallel1.css,/resource/to/fileParallel1.js,/resource/fileParallel2.js"		
 	/>
 
-	Fires: "namespace:staticResourcesLoaded" event.
 
 	Note: 
-	-  This fires event at "application" level. So you should use it at Application-component.
+	-  This fires event at "application" level "namespace:staticResourcesLoaded" event. So you should use it at Application-component.
 	
 	- You can also use it inside a "component" but you have make sure to 
 	ignore events after getting the first one.

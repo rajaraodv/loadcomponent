@@ -1,77 +1,108 @@
-#Load.cmp
+#load.cmp
  	
 A simple and fast Salesforce Aura component that can be used to load  JS and CSS static resources in series / parallel / in combination.
- 
-####Usage 1:
-	
-```
-	
-In the myApp.app (not myComponent.cmp)
-  	<namespace:load 
-		filesInSeries="/resource/to/css1.css,/resource/to/file1.js,/resource/dependentOnFile1.js"
-		filesInParallel="/resource/to/fileParallel1.js,/resource/fileParallel2.js"		
-	/>
-	
-In myComponent.cmp:
- <aura:handler event="jam:staticResourcesLoaded" action="{!c.initScripts}"/>
- 
+
+##Getting started.
+1. Create `load.cmp`, `loadController.js` and `staticResourcesLoaded.evt` files in your org and copy contents from this here.
+2. Change namespace from `jam` to your org's namespace in all those files.
+3. Copy the component into your application's .app file (say myAuraApp.app) 
+
 ```
 
-####Usage 2 (both load and listen from component.cmp):
-If you want to use both load and listen from a component, make sure to 
-	ignore events after getting the first one. Otherwise you will be listening to the event everytime any other component loads files (or you may have multiple copies of the same component all loading the same set of files causing duplicate notifications) 
-	
-```
-	
-In the myComponent.cmp 
-  	<namespace:load 
-		filesInSeries="/resource/to/css1.css,/resource/to/file1.js,/resource/dependentOnFile1.js"
-		filesInParallel="/resource/to/fileParallel1.js,/resource/fileParallel2.js"		
+<application>
+	<namespace:load 
+		filesInParallel="/resource/zipfileresource/css1.css,/resource/zipfileresource/fileParallel1.js,/resource/zipfileresource/fileParallel2.js"		
+		filesInSeries="/resource/zipfileresource/fileSeries1.js,/resource/zipfileresource/DEPENDENT_on_fileSeries1.js"
 	/>
-	
-Also in myComponent.cmp:
- <aura:handler event="jam:staticResourcesLoaded" action="{!c.initScripts}"/>
- 
- 
- 	//Do avoid listening duplicate events, add some code like this in your listener function.
+</application>
 
+If the static resource files are not inside a zip, use "sfjs" and "sfcss" as extensions for js and css files respectively (see below for more details). 
+
+
+<application>
+	<namespace:load 
+		filesInParallel="/resource/css1.sfcss,/resource/fileParallel1.sfjs,/resource/fileParallel2.sfjs"		
+		filesInSeries="/resource/fileSeries1.sfjs,/resource/DEPENDENT_on_fileSeries1.sfjs"
+	/>
+</application>
+
+```
+ 
+####Various Ways of using load.cmp:
+
+1. Load CSS /JS files asynchronously but one-by-one from left to right(Great for dependency but not speed).
+
+	```
+		<namespace:load 
+			filesInSeries="/resource/to/css1.css,/resource/to/file1.js,/resource/dependentOnFile1.js"
+		/>
+	```
+2. Load files asynchronously and in parallel (Great for speed but not for dependency management).
+
+	```
+	<namespace:load 
+		filesInParallel="/resource/to/fileParallel1.js,/resource/fileParallel2.js"
+	/>
+	``` 	
+3. Load some in series and some in parallel **(Common usecase)**
+	
+	Tip: Put your CSS files, non-dependent files in filesInParallel and only dependent files in filesInSeries
+
+
+	```
+	<namespace:load 
+		filesInParallel="/resource/to/css1.css,/resource/to/fileParallel1.js,/resource/fileParallel2.js"		
+		filesInSeries="/resource/to/file1.js,/resource/dependentOnFile1.js"
+	/>
+	``` 
+Note: The library prioritizes and loads all files in `filesInParallel` before loading files in `filesInSeries`.
+
+####Handler:
+Once all the files are loaded (**irrespective of pattern**), the library fires 'APPLICATION' level event: `staticResourcesLoaded`.
+
+```	 
+	<aura:handler event="jam:staticResourcesLoaded" action="{!c.initScripts}"/>
+```
+
+####Static Resource File Paths: 
+1. Static Resources that are not in Zip file (**.sfjs and ".sfcss**)
+
+	To load a CSS or JS file that's a direct or raw file resource, 
+		use `/resource/<filename>.sf<filetype>` filepath.
+		
+	```
+	   - JavaScript file: `/resource/myJsFile.sfjs`
+       - CSS file: `/resource/myCssfile.sfcss`
+       
+       	<namespace:load 
+			filesInParallel="/resource/myCssFile.sfcss,/resource/fileParallel1.sfjs,/resource/fileParallel2.sfjs"
+		/>
+	```
+	
+	Note: This tells the library what kind of file it is AND that it doesn't have a file extension unlike files inside a zip file. 
+
+	
+2. Static Resources that are in Zip files.
+
+	To load a CSS or JS file in static resource inside a Zip file use: `/resource/zipfileResourceName/path/to/file.cssOrJs`
+	
+  	```
+  	/resource/zipfileResourceName/path/to/jsfileInsideZip.js
+  	/resource/zipfileResourceName/path/to/fileInsideZip.css
+	```
+
+	Note: 
+	-  This fires event at "APPLICATION" level "namespace:staticResourcesLoaded" event. So you should use it at Application-component.
+	
+	- You can also use it inside a "component" but you have make sure to 
+	ignore events after getting the first one.
+ 	//In Handler component's controller, add some code like this.
 	if(!component.alreadyreceivedEvent) {
 		component.alreadyreceivedEvent = true;
     	// do something w/ the event..
 	} else {
   		return; //ignore further events	
 	}
- 
-```
-
-####Other ways to load scripts
-
-1. `filesInParallel` take priority and are loaded first as quickly as possible. Once everything in filesInParallel are loaded, `filesInSeries` are loaded in order. So you can also do like below because bootstrap.js is dependant on css and jquery.
-
-	```
-	      	<jam:load 
-	      	 	filesInParallel="/resource/aotp_bootstrap/css/aotp_bootstrap.css,/resource/jquery/jquery.js"
-	      		filesInSeries="/resource/aotp_bootstrap/js/bootstrap.js"
-	         />
-	   
-	```
-
-
- 
-2. `filesInSeries` and `filesInParallel` are optional so you can just load everything in series or load everything in parallel(if you don't have any dependencies)
-
-```
-	
- <namespace:load 
-		filesInSeries="/resource/to/css1.css,/resource/to/file1.js,/resource/dependentOnFile1.js"
-	/>
-
-	If you dont have any dependencies, you can load everything in parallel.
-  	<namespace:load 
-		filesInParallel="/resource/to/cssParallel1.css,/resource/to/fileParallel1.js,/resource/fileParallel2.js"		
-	/>
-	
-```
 
 ##Example App
 You can test it by loading the example app (loadFilesExample.app). 
