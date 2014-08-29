@@ -1,32 +1,39 @@
 #load.cmp
  	
-A simple and fast Salesforce Aura component that can be used to load  JS and CSS static resources in series / parallel / in combination.
+A simple and fast Salesforce Aura component that can be used to load  JS and CSS static resources in series, parallel, or mix and match of series and parallel loading fashion.
 
-##Getting started.
+###Getting started
 1. Create `load.cmp`, `loadController.js` and `staticResourcesLoaded.evt` files in your org and copy contents from this here.
 2. Change namespace from `jam` to your org's namespace in all those files.
 3. Copy the component into your application's .app file (say myAuraApp.app) 
 
+	```
+	
+	<application>
+		<namespace:load 
+			filesInParallel="/resource/zipfileresource/css1.css,/resource/zipfileresource/fileParallel1.js,/resource/zipfileresource/fileParallel2.js"		
+			filesInSeries="/resource/zipfileresource/fileSeries1.js,/resource/zipfileresource/DEPENDENT_on_fileSeries1.js"
+		/>
+	</application>
+	
+	
+	
+	If Static resources are not inside a zip, use "sfjs" and "sfcss" 
+	as extensions(see below for more details). 
+	
+	<application>
+		<namespace:load 
+			filesInParallel="/resource/css1.sfcss,/resource/fileParallel1.sfjs,/resource/fileParallel2.sfjs"		
+			filesInSeries="/resource/fileSeries1.sfjs,/resource/DEPENDENT_on_fileSeries1.sfjs"
+		/>
+	</application>
+	
+	```
+4. Listen to `staticResourcesLoaded` in your component and do something. Once all the css & JS files are loaded, this component fires: staticResourcesLoaded event.
+```
+<aura:handler event="jam:staticResourcesLoaded" action="{!c.initScripts}"/>
 ```
 
-<application>
-	<namespace:load 
-		filesInParallel="/resource/zipfileresource/css1.css,/resource/zipfileresource/fileParallel1.js,/resource/zipfileresource/fileParallel2.js"		
-		filesInSeries="/resource/zipfileresource/fileSeries1.js,/resource/zipfileresource/DEPENDENT_on_fileSeries1.js"
-	/>
-</application>
-
-If the static resource files are not inside a zip, use "sfjs" and "sfcss" as extensions for js and css files respectively (see below for more details). 
-
-
-<application>
-	<namespace:load 
-		filesInParallel="/resource/css1.sfcss,/resource/fileParallel1.sfjs,/resource/fileParallel2.sfjs"		
-		filesInSeries="/resource/fileSeries1.sfjs,/resource/DEPENDENT_on_fileSeries1.sfjs"
-	/>
-</application>
-
-```
  
 ####Various Ways of using load.cmp:
 
@@ -67,8 +74,7 @@ Once all the files are loaded (**irrespective of pattern**), the library fires '
 ####Static Resource File Paths: 
 1. Static Resources that are not in Zip file (**.sfjs and ".sfcss**)
 
-	To load a CSS or JS file that's a direct or raw file resource, 
-		use `/resource/<filename>.sf<filetype>` filepath.
+	Salesforce doesn't allow files to have .js or .css extensions if they are not within a Zip file. To load such direct or raw file resource, use `/resource/<filename>.sf<filetype>` filepath.
 		
 	```
 	   - JavaScript file: `/resource/myJsFile.sfjs`
@@ -91,11 +97,14 @@ Once all the files are loaded (**irrespective of pattern**), the library fires '
   	/resource/zipfileResourceName/path/to/fileInsideZip.css
 	```
 
-	Note: 
-	-  This fires event at "APPLICATION" level "namespace:staticResourcesLoaded" event. So you should use it at Application-component.
+###Notes: 
+
+1. This fires event at "APPLICATION" level "namespace:staticResourcesLoaded" event. So you should use it at Application-component.
 	
-	- You can also use it inside a "component" but you have make sure to 
+2. You can also use it inside a "component" but you have make sure to 
 	ignore events after getting the first one.
+	
+	```
  	//In Handler component's controller, add some code like this.
 	if(!component.alreadyreceivedEvent) {
 		component.alreadyreceivedEvent = true;
@@ -103,6 +112,9 @@ Once all the files are loaded (**irrespective of pattern**), the library fires '
 	} else {
   		return; //ignore further events	
 	}
+	```
+	
+3. Internally uses MODIFIED version of l.js (https://github.com/malko/l.js)
 
 ##Example App
 You can test it by loading the example app (loadFilesExample.app). 
@@ -111,21 +123,9 @@ You can test it by loading the example app (loadFilesExample.app).
 2. Change namespace from `jam` to YOUR_NAMESPACE.
 3. Upload `aotp_bootstrap.zip` and `jquery.zip` to static resources with the same name ("aotp_bootstrap" and "jquery"). 
 3. Open  `loadFilesExample.app`. Click on preview.
-4. 'click on the `Launch Modal - JavaScript` to make sure 
+4. 'click on the `Launch Modal - JavaScript` to see if the JavaScript dialog shows up.
 
-              
-###Notes
-	- Change namespace from `jam` to YOUR_NAMESPACE.
-	
-	- Internally uses l.js (https://github.com/malko/l.js)
 
-	- Fires: "namespace:staticResourcesLoaded" event.
-
-	-  This fires event at "application" level. So you should use it at Application-component.
-	
-	- You can also use it inside a "component" but you have make sure to 
-	ignore events after getting the first one.
-	
 	
 
 
