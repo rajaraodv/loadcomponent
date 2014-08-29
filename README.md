@@ -2,7 +2,7 @@
  	
 A simple and fast Salesforce Aura component that can be used to load  JS and CSS static resources in series, parallel, or in any other fashion.
 
-###Getting started
+##Getting started
 1. Create `load.cmp`, `loadController.js` and `staticResourcesLoaded.evt` files in your org and copy contents from this here.
 2. Change namespace from `jam` to your org's namespace in all those files.
 3. Load the `load` component into your application's .app file (say myAuraApp.app) like below. 
@@ -39,14 +39,14 @@ A simple and fast Salesforce Aura component that can be used to load  JS and CSS
  	
 
  
-####Various Ways of using load.cmp:
+##Various Ways Of Using load.cmp:
 
 1. Load CSS /JS files asynchronously but one-by-one from left to right(Great for dependency but not speed).
 
 	```
-		<namespace:load 
-			filesInSeries="/resource/to/css1.css,/resource/to/file1.js,/resource/dependentOnFile1.js"
-		/>
+	<namespace:load 
+		filesInSeries="/resource/to/css1.css,/resource/to/file1.js,/resource/dependentOnFile1.js"
+	/>
 	```
 2. Load files asynchronously and in parallel (Great for speed but not for dependency management).
 
@@ -68,25 +68,26 @@ A simple and fast Salesforce Aura component that can be used to load  JS and CSS
 	``` 
 Note: The library prioritizes and loads all files in `filesInParallel` before loading files in `filesInSeries`.
 
-####Handler:
+##Handler:
 Once all the files are loaded (**irrespective of pattern**), the library fires 'APPLICATION' level event: `staticResourcesLoaded`.
 
 ```	 
-	<aura:handler event="jam:staticResourcesLoaded" action="{!c.initScripts}"/>
+<aura:handler event="jam:staticResourcesLoaded" action="{!c.initScripts}"/>
 ```
 
-####Static Resource File Paths: 
+##Static Resource File Paths: 
 1. Static Resources that are not in Zip file (**.sfjs and ".sfcss**)
 
-	Salesforce doesn't allow files to have .js or .css extensions if they are not within a Zip file. To load such direct or raw file resource, use `/resource/<filename>.sf<filetype>` filepath.
+	Salesforce doesn't allow files to have .js or .css extensions if they are not within a Zip file. 
+	To load such direct or raw file resource, use `/resource/<filename>.sf<filetype>` filepath.
 		
 	```
-	   - JavaScript file: `/resource/myJsFile.sfjs`
-       - CSS file: `/resource/myCssfile.sfcss`
+	// JavaScript file: /resource/myJsFile.sfjs
+    // CSS file: /resource/myCssfile.sfcss
        
-       	<namespace:load 
+    <namespace:load 
 			filesInParallel="/resource/myCssFile.sfcss,/resource/fileParallel1.sfjs,/resource/fileParallel2.sfjs"
-		/>
+    />
 	```
 	
 	Note: This tells the library what kind of file it is AND that it doesn't have a file extension unlike files inside a zip file. 
@@ -101,12 +102,12 @@ Once all the files are loaded (**irrespective of pattern**), the library fires '
   	/resource/zipfileResourceName/path/to/fileInsideZip.css
 	```
 
-###Notes: 
+##Notes: 
 
 1. This fires event at "APPLICATION" level "namespace:staticResourcesLoaded" event. So you should use it at Application-component level.
 	
 2. You can also use it inside a "component" but you have make sure to 
-	ignore events after getting the first one.
+	ignore events after getting the first one.	
 	
 	```
  	//In Handler component's controller, add some code like this.
