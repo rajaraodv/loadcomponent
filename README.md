@@ -123,7 +123,7 @@ Once all the files are loaded (**irrespective of pattern**), the library fires '
 3. Internally uses MODIFIED version of l.js (https://github.com/malko/l.js)
 
 ##Example App
-You can test it by loading the example app `loadFilesExample.app` inside example directory. 
+You can test it by loading the example `loadFilesExample.app` inside example directory. 
 
 1. Create an Aura app with the with filenames `loadFilesExample.app`, `loadFilesExample.cmp`, `loadFilesExampleController.js` from developer console.
 2. Change namespace from `jam` to YOUR_NAMESPACE.
