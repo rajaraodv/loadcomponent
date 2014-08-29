@@ -1,6 +1,6 @@
 #load.cmp
  	
-A simple and fast Salesforce Aura component that can be used to load  JS and CSS static resources in series, parallel, or mix and match of series and parallel loading fashion.
+A simple and fast Salesforce Aura component that can be used to load  JS and CSS static resources in series, parallel, or in any other fashion.
 
 ###Getting started
 1. Create `load.cmp`, `loadController.js` and `staticResourcesLoaded.evt` files in your org and copy contents from this here.
@@ -8,7 +8,8 @@ A simple and fast Salesforce Aura component that can be used to load  JS and CSS
 3. Load the `load` component into your application's .app file (say myAuraApp.app) like below. 
 
 	```
-	//Loads css1.css, fileParallel1.js and fileParallel2.js in parallel. After all 3 are loaded it async loads fileSeries1.js and finally async loads DEPENDENT_on_fileSeries1.js.
+	// Loads css1.css, fileParallel1.js and fileParallel2.js in parallel. 
+	// After all 3 are loaded it async loads fileSeries1.js and finally async loads DEPENDENT_on_fileSeries1.js.
 	
 	<application>
 		<namespace:load 
@@ -19,7 +20,7 @@ A simple and fast Salesforce Aura component that can be used to load  JS and CSS
 	
 	
 	
-	If Static resources are not inside a zip file, use "sfjs" and "sfcss" 
+	//If the Static resources are NOT inside a zip file, use "sfjs" and "sfcss" 
 	as extensions(see down below for more details). 
 	
 	<application>
@@ -30,25 +31,12 @@ A simple and fast Salesforce Aura component that can be used to load  JS and CSS
 	</application>
 	
 	```
-4. Listen to `staticResourcesLoaded` in your component and do something. Once all the css & JS files are loaded, this component fires: staticResourcesLoaded event.
+4. Listen to `staticResourcesLoaded` in your component and do something. 
 
 	```
 	<aura:handler event="jam:staticResourcesLoaded" action="{!c.initScripts}"/>
 	```
-	
-
-Note: You can also use it inside a "component" but you have make sure to 
-	ignore events after getting the first one.
-	
-		```
-	 	//In Handler component's controller like c.initScripts, add some code like this.
-		if(!component.alreadyreceivedEvent) {
-			component.alreadyreceivedEvent = true;
-	    	// do something w/ the event..
-		} else {
-	  		return; //ignore further events	
-		}
-	```
+ 	
 
  
 ####Various Ways of using load.cmp:
@@ -115,7 +103,7 @@ Once all the files are loaded (**irrespective of pattern**), the library fires '
 
 ###Notes: 
 
-1. This fires event at "APPLICATION" level "namespace:staticResourcesLoaded" event. So you should use it at Application-component.
+1. This fires event at "APPLICATION" level "namespace:staticResourcesLoaded" event. So you should use it at Application-component level.
 	
 2. You can also use it inside a "component" but you have make sure to 
 	ignore events after getting the first one.
@@ -133,13 +121,13 @@ Once all the files are loaded (**irrespective of pattern**), the library fires '
 3. Internally uses MODIFIED version of l.js (https://github.com/malko/l.js)
 
 ##Example App
-You can test it by loading the example app (loadFilesExample.app). 
+You can test it by loading the example app `loadFilesExample.app` inside example directory. 
 
 1. Create an Aura app with the with filenames `loadFilesExample.app`, `loadFilesExample.cmp`, `loadFilesExampleController.js` from developer console.
 2. Change namespace from `jam` to YOUR_NAMESPACE.
 3. Upload `aotp_bootstrap.zip` and `jquery.zip` to static resources with the same name ("aotp_bootstrap" and "jquery"). 
-3. Open  `loadFilesExample.app`. Click on preview.
-4. 'click on the `Launch Modal - JavaScript` to see if the JavaScript dialog shows up.
+4. Open  `loadFilesExample.app`. Click on preview.
+5. 'click on the `Launch Modal - JavaScript` to see if the JavaScript dialog shows up.
 
 
 	
