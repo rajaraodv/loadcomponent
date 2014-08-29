@@ -5,9 +5,10 @@ A simple and fast Salesforce Aura component that can be used to load  JS and CSS
 ###Getting started
 1. Create `load.cmp`, `loadController.js` and `staticResourcesLoaded.evt` files in your org and copy contents from this here.
 2. Change namespace from `jam` to your org's namespace in all those files.
-3. Copy the component into your application's .app file (say myAuraApp.app) 
+3. Load the `load` component into your application's .app file (say myAuraApp.app) like below. 
 
 	```
+	//Loads css1.css, fileParallel1.js and fileParallel2.js in parallel. After all 3 are loaded it async loads fileSeries1.js and finally async loads DEPENDENT_on_fileSeries1.js.
 	
 	<application>
 		<namespace:load 
@@ -18,8 +19,8 @@ A simple and fast Salesforce Aura component that can be used to load  JS and CSS
 	
 	
 	
-	If Static resources are not inside a zip, use "sfjs" and "sfcss" 
-	as extensions(see below for more details). 
+	If Static resources are not inside a zip file, use "sfjs" and "sfcss" 
+	as extensions(see down below for more details). 
 	
 	<application>
 		<namespace:load 
@@ -30,9 +31,24 @@ A simple and fast Salesforce Aura component that can be used to load  JS and CSS
 	
 	```
 4. Listen to `staticResourcesLoaded` in your component and do something. Once all the css & JS files are loaded, this component fires: staticResourcesLoaded event.
-```
-<aura:handler event="jam:staticResourcesLoaded" action="{!c.initScripts}"/>
-```
+
+	```
+	<aura:handler event="jam:staticResourcesLoaded" action="{!c.initScripts}"/>
+	```
+	
+
+Note: You can also use it inside a "component" but you have make sure to 
+	ignore events after getting the first one.
+	
+		```
+	 	//In Handler component's controller like c.initScripts, add some code like this.
+		if(!component.alreadyreceivedEvent) {
+			component.alreadyreceivedEvent = true;
+	    	// do something w/ the event..
+		} else {
+	  		return; //ignore further events	
+		}
+	```
 
  
 ####Various Ways of using load.cmp:
