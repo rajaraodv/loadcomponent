@@ -1,0 +1,16 @@
+<!--
+	Note: 
+	-  This fires event at "application" level. So you should use it at Application-component.
+	
+	- You can also use it inside a "component" but you have make sure to 
+	ignore events after getting the first one (this happens when you have multiple components all loading some static-resources from w/in themselves).
+ 	//In Handler component's controller, add some code like this.
+	if(!component.alreadyreceivedEvent) {
+		component.alreadyreceivedEvent = true;
+    	// do something w/ the event..
+	} else {
+  		return; //ignore further events	
+	}
+
+-->
+<aura:event type="APPLICATION" description="Event template" />

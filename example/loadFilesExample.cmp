@@ -1,0 +1,42 @@
+<aura:component>
+	<aura:attribute name="title" type="String" default="Modal - requiresTest"/>
+	<aura:attribute name="description" type="String" default="This is the body of the modal..."/>
+    <aura:attribute name="modalName" type="String" default="myModal" description="Unique identifier for each instance..."/>
+
+      <aura:handler event="jam:staticResourcesLoaded" action="{!c.initScripts}"/>
+
+     
+
+ 
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div class="aotp">
+        <div class="container-fluid">
+            <div class="row well">
+                <!-- Button trigger modal -->
+                <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="{!'#' + v.modalName}">
+                    Launch Modal - Markup
+                </button>            
+                <button id="modalToggle" class="btn btn-primary btn-lg">
+                    Launch Modal - JavaScript
+                </button>            
+            </div>
+            <div class="modal fade" id="{!v.modalName}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">{!v.title}</h4>
+                        </div>
+                        <div class="modal-body">
+                            {!v.description}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        </div>
+    </div>
+</aura:component>

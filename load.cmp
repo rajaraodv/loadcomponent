@@ -1,0 +1,83 @@
+<!--
+ 	Loads JS and CSS static resources in series / parallel / in both fashion and fires "staticResourcesLoaded"
+	
+	Loading Files:	
+	1. Load files asynchronously but one-by-one, from left to right(Great for dependency).
+ 	<namespace:load 
+		filesInSeries="/resource/to/css1.css,/resource/to/file1.js,/resource/dependentOnFile1.js"
+	/>
+
+	2. Load files asynchronously and in parallel (Great for speed).
+ 	<namespace:load 
+			filesInParallel="/resource/to/fileParallel1.js,/resource/fileParallel2.js"	/>
+  	
+	3. Load some in series and some in parallel (Common usecase)
+	Tip: put your CSS files, non-dependent files in filesInParallel and only dependent files in filesInSeries
+	<namespace:load 
+		filesInParallel="/resource/to/css1.css,/resource/to/fileParallel1.js,/resource/fileParallel2.js"		
+		filesInSeries="/resource/to/file1.js,/resource/dependentOnFile1.js"
+	/>
+
+
+ 	Listener / Handler:
+	Once all the files are loaded (irrespective of pattern), the library fires 'APPLICATION' level event: staticResourcesLoaded
+	 
+	<aura:handler event="jam:staticResourcesLoaded" action="{!c.initScripts}"/>
+
+
+	Static Resource File Paths: 
+ 	1. ".sfjs" and ".sfcss" 
+  	To load a CSS or JS file that's a direct/raw file resource (i.e. not within a Zip), 
+		use "<filename>.sf<filetype>" file extension.
+	   - JavaScript file: "/resource/myJsFile.sfjs"
+       - CSS file: "/resource/myCssfile.sfcss"
+	
+	This tells the library what kind of file it is AND that it doesn't have a file extension unlike files inside an archive. 
+
+	
+ 	2. To load a CSS or JS file in static resource inside a Zip file use:
+  	"/resource/zipfileResourceName/path/to/fileInsideZip.js"
+
+
+	NOTE: If your file is not in a 
+	You can load everything in series (in order)
+	 <namespace:load 
+		filesInSeries="/resource/to/css1.css,/resource/to/file1.js,/resource/dependentOnFile1.js"
+	/>
+
+	If you dont have any dependencies, you can load everything in parallel.
+  	<namespace:load 
+		filesInParallel="/resource/to/cssParallel1.css,/resource/to/fileParallel1.js,/resource/fileParallel2.js"		
+	/>
+
+	Fires: "namespace:staticResourcesLoaded" event.
+
+	Note: 
+	-  This fires event at "application" level. So you should use it at Application-component.
+	
+	- You can also use it inside a "component" but you have make sure to 
+	ignore events after getting the first one.
+ 	//In Handler component's controller, add some code like this.
+	if(!component.alreadyreceivedEvent) {
+		component.alreadyreceivedEvent = true;
+    	// do something w/ the event..
+	} else {
+  		return; //ignore further events	
+	}
+-->
+<aura:component>
+    
+    <!-- filesInSeries = Set an array of JS or CSS static resource file paths 
+		They will be loaded **in the order they are passed in**
+	--> 
+    <aura:attribute name="filesInSeries" type="String[]"/>
+    
+     <!-- filesInParallel = Set an array of JS or CSS static resource file paths 
+		They will be loaded in parallel after staticResources 
+	--> 
+    <aura:attribute name="filesInParallel" type="String[]"/>
+    
+    
+	<aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    
+</aura:component>
