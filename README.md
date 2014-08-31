@@ -123,12 +123,12 @@ Once all the files are loaded (**irrespective of pattern**), the library fires '
 3. Internally uses MODIFIED version of l.js (https://github.com/malko/l.js)
 
 ##Example App
-You can test it by loading the example `loadFilesExample.app` inside example directory. 
+You can test it by loading the example `BootstrapApp.app` inside example directory. 
 
-1. Create an Aura app with the with filenames `loadFilesExample.app`, `loadFilesExample.cmp`, `loadFilesExampleController.js` from developer console.
+1. Create an Aura app with the with filenames `BootstrapApp.app`, `BootstrapApp.cmp`, `BootstrapAppController.js` from developer console.
 2. Change namespace from `jam` to YOUR_NAMESPACE.
 3. Upload `aotp_bootstrap.zip` and `jquery.js` to static resources with the same name ("aotp_bootstrap" and "jquery"). 
-4. Open  `loadFilesExample.app`. Click on preview.
+4. Open  `BootstrapApp.app`. Click on preview.
 5. 'click on the `Launch Modal - JavaScript` to see if the JavaScript dialog shows up.
 
 
