@@ -8,15 +8,10 @@
     filesInParallel="/resource/aotp_bootstrap/css/aotp_bootstrap.css,/resource/jquery.sfjs"
     filesInSeries="/resource/aotp_bootstrap/js/bootstrap.js"
   />
-  <div class="container">
+  
+  <div>1st copy of the component</div>
+  <jam:BootstrapAppCmp/>
     
-     <!-- 1st copy of the component -->
-    <jam:BootstrapAppCmp/>
-      
-    <div>Second copy of the component</div>
-    
-      <!-- 2nd copy of the component -->
-    <jam:BootstrapAppCmp/>
-
-  </div>
+  <div>2nd copy of the component</div>
+  <jam:BootstrapAppCmp/>
 </aura:application>
