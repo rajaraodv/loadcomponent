@@ -2,7 +2,13 @@
  	
 A simple and fast Salesforce Aura component that can be used to load  JS and CSS static resources in series, parallel, or in any other fashion.
 
+## Unmanaged Package:
+``` https://login.salesforce.com/packaging/installPackage.apexp?p0=04tB000000017Gl ```
+
 ##Getting started
+0. Simply install unmanaged package from here: `https://login.salesforce.com/packaging/installPackage.apexp?p0=04tB000000017Gl`
+
+OR...
 1. Create `load.cmp`, `loadController.js` and `staticResourcesLoaded.evt` files in your org and copy contents from this here.
 2. Change namespace from `jam` to your org's namespace in all those files.
 3. Load the `load` component into your application's .app file (say myAuraApp.app) like below. 
